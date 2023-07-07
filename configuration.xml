@@ -270,6 +270,10 @@
       <property id="rtos.awsfreertos.object.queue.queue_length" value="20"/>
       <property id="rtos.awsfreertos.object.queue.allocation" value="rtos.awsfreertos.object.queue.allocation.static"/>
     </object>
+    <object id="rtos.awsfreertos.object.binary_semaphore.2032787500">
+      <property id="rtos.awsfreertos.object.binary_semaphore.symbol" value="g_data_available_sem"/>
+      <property id="rtos.awsfreertos.object.binary_semaphore.allocation" value="rtos.awsfreertos.object.binary_semaphore.allocation.static"/>
+    </object>
     <context id="_hal.0">
       <stack module="module.driver.ioport_on_ioport.0"/>
       <stack module="module.middleware.rm_freertos_port.0"/>

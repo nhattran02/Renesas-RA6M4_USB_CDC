@@ -14,6 +14,7 @@
 #include <stringFunction.h>
 #include <parse.h>
 #include "commandSupport.h"
+#include "usbLog.h"
 
 /* Global variables */
 extern uint8_t g_apl_device[];
@@ -82,6 +83,7 @@ void usb_pcdc_task(void)
 #endif
 
         writeData(&ring_buffer, (const char *)g_usb_buf);
+        xSemaphoreGive(g_data_available_sem);
         memset (g_usb_buf, 0, sizeof(g_usb_buf)); // Clean g_usb_buf
     }
 }
@@ -94,6 +96,7 @@ void read_buffer_task(void)
     bool err_buf;
     char read_data[RING_BUFFER_SIZE];
     while(1){
+        xSemaphoreTake(g_data_available_sem, portMAX_DELAY);
         memset(read_data, 0, sizeof(read_data));
         err_buf = readData(&ring_buffer, RING_BUFFER_SIZE - 1, read_data);
 
@@ -131,35 +134,11 @@ void process_data_task(void)
         if(index != 0){
             CDC_Command_Table[index - 1].pfunc(params);
         }else{
-            usbTransmit((const uint8_t *)cmdStr, (const uint16_t)(strlen(cmdStr) - 2));
-            usbTransmit((const uint8_t *)" is not supported\r\n", (const uint16_t)strlen(" is not supported\r\n"));
+            USB_CDC_printf("%sis not supported\r\n", cmdStr);
         }
-
     }
 }
 
-
-/*****************************************************************************************************************
- *  @brief      usbTransmit
- *  @param[in]  pBuffer: the buffer which holds the data being sent to the PC via frameProtocol
- *  @param[in]  numBytes: number of bytes to send
- *  @retval     status:   true if usb write is successful
- *  ****************************************************************************************************************/
-
-fsp_err_t usbTransmit(const uint8_t *pBuffer, const uint16_t numBytes)
-{
-    fsp_err_t err = FSP_SUCCESS;
-
-    err = R_USB_Write (&g_basic0_ctrl, (uint8_t*) pBuffer, numBytes, USB_CLASS_PCDC); //or 0x00
-
-    /* Handle error */
-    if (err != FSP_SUCCESS)
-    {
-        USB_PCDC_ERR_PRINTF(DB_LEVEL_CRITICAL, "\r\n**Error to write USB**\r\n");
-        return FSP_ERR_ABORTED;
-    }
-    return FSP_SUCCESS;
-}
 
 /*******************************************************************************************************************//**
  * @brief       USB PCDC with freertos callback

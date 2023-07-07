@@ -38,7 +38,7 @@
 
 
 /* Private functions */
-fsp_err_t usbTransmit(const uint8_t *pBuffer, const uint16_t numBytes);
+//fsp_err_t usbTransmit(const uint8_t *pBuffer, const uint16_t numBytes);
 void usb_pcdc_task(void);
 void read_buffer_task(void);
 void process_data_task(void);

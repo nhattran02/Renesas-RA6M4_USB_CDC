@@ -8,6 +8,7 @@
 #include "commandSupport.h"
 #include "hal_data.h"
 #include "usb_pcdc.h"
+#include "usbLog.h"
 
 void AT_LED_HANDLER(void *params);
 void AT_BLINK_HANDLER(void *params);
@@ -62,15 +63,15 @@ uint8_t hashTableLookup(char * cmd){
 void AT_LED_HANDLER(void *params)
 {
     (void)params;
-    usbTransmit((const uint8_t *)"AT_LED_HANDLER() is called\r\n", (const uint16_t)sizeof("AT_LED_HANDLER() is called\r\n"));
+    USB_CDC_printf("%s is called\r\n", "AT_LED_HANDLER");
 }
 
 void AT_BLINK_HANDLER(void *params){
     (void)params;
-    usbTransmit((const uint8_t *)"AT_BLINK_HANDLER() is called\r\n", (const uint16_t)sizeof("AT_BLINK_HANDLER() is called\r\n"));
+    USB_CDC_printf("%s is called\r\n", "AT_BLINK_HANDLER");
 }
 
 void AT_TIME_HANDLER(void *params){
     (void)params;
-    usbTransmit((const uint8_t *)"AT_TIME_HANDLER() is called\r\n", (const uint16_t)sizeof("AT_TIME_HANDLER() is called\r\n"));
+    USB_CDC_printf("%s is called\r\n", "AT_TIME_HANDLER");
 }

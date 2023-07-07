@@ -589,3 +589,7 @@ FSP Configuration
     Queue Length (Items): 20
     Memory Allocation: Static
     
+  Object "g_data_available_sem Binary Semaphore"
+    Symbol: g_data_available_sem
+    Memory Allocation: Static
+    
